@@ -9,7 +9,7 @@
 @font-face{font-family:AC;src:url(fonts/ArchivoCondensed-Medium.ttf);font-weight:500}
 @font-face{font-family:AC;src:url(fonts/ArchivoCondensed-ExtraBold.ttf);font-weight:800}
 @font-face{font-family:AC;src:url(fonts/ArchivoCondensed-Light.ttf);font-weight:300}
-:root{--ink:#1A1A1A;--paper:#fff;--ratio:1131/1600;--toc:300px}
+:root{--ink:#1A1A1A;--paper:#fff;--ratio:1131/1600;--toc:260px}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:var(--paper);color:var(--ink);font:500 14px/1.2 AC,"Arial Narrow",sans-serif;overflow:hidden}
 header{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;gap:18px;padding:0 20px;border-bottom:1px solid var(--ink);background:var(--paper);z-index:3}
@@ -41,7 +41,7 @@ aside a.c b{font-weight:800;font-size:16px;letter-spacing:-.01em}
 aside a.p{padding-left:32px}
 aside a.on{border-left-color:var(--ink)}aside a.on b{font-weight:800}
 #tg{display:none}.sm{display:none}
-@media (max-width:1000px){:root{--toc:0px} aside{width:min(320px,88vw);transform:translateX(100%);transition:transform .2s} body.open aside{transform:none;box-shadow:-20px 0 40px rgba(0,0,0,.15)} #tg{display:inline-block}}
+@media (max-width:760px){:root{--toc:0px} aside{width:min(320px,88vw);transform:translateX(100%);transition:transform .2s} body.open aside{transform:none;box-shadow:-20px 0 40px rgba(0,0,0,.15)} #tg{display:inline-block}}
 footer{position:fixed;bottom:0;left:0;right:0;height:56px;display:flex;align-items:center;gap:14px;padding:0 20px;border-top:1px solid var(--ink);background:var(--paper);z-index:3}
 footer input{flex:1;accent-color:var(--ink)}
 footer button{width:44px;font-size:18px;font-weight:800}
