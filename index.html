@@ -9,7 +9,7 @@
 @font-face{font-family:AC;src:url(fonts/ArchivoCondensed-Medium.ttf);font-weight:500}
 @font-face{font-family:AC;src:url(fonts/ArchivoCondensed-ExtraBold.ttf);font-weight:800}
 @font-face{font-family:AC;src:url(fonts/ArchivoCondensed-Light.ttf);font-weight:300}
-:root{--ink:#1A1A1A;--paper:#fff;--ratio:1131/1600}
+:root{--ink:#1A1A1A;--paper:#fff;--ratio:1131/1600;--toc:300px}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:var(--paper);color:var(--ink);font:500 14px/1.2 AC,"Arial Narrow",sans-serif;overflow:hidden}
 header{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;gap:18px;padding:0 20px;border-bottom:1px solid var(--ink);background:var(--paper);z-index:3}
@@ -19,7 +19,7 @@ header .sp{flex:1}
 select,a.dl,button{font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--ink);height:32px;padding:0 12px;border-radius:0;cursor:pointer}
 a.dl{display:inline-flex;align-items:center;text-decoration:none;font-weight:800;background:var(--ink);color:var(--paper)}
 #cpt{font-variant-numeric:tabular-nums;white-space:nowrap;min-width:84px;text-align:right}
-main{position:fixed;top:52px;bottom:56px;left:0;right:0;display:flex;align-items:center;justify-content:center;padding:18px}
+main{position:fixed;top:52px;bottom:56px;left:0;right:var(--toc);display:flex;align-items:center;justify-content:center;padding:18px}
 .spread{display:flex;height:100%;max-width:100%;align-items:center;justify-content:center}
 .pg{height:100%;aspect-ratio:var(--ratio);max-width:50%;background:var(--paper) center/contain no-repeat;outline:1px solid var(--ink);position:relative}
 .single .pg{max-width:100%}
@@ -27,18 +27,33 @@ main{position:fixed;top:52px;bottom:56px;left:0;right:0;display:flex;align-items
 .pg.l::after{content:"";position:absolute;top:0;bottom:0;right:0;width:18px;background:linear-gradient(to left,rgba(0,0,0,.10),transparent)}
 .pg.r::after{content:"";position:absolute;top:0;bottom:0;left:0;width:18px;background:linear-gradient(to right,rgba(0,0,0,.10),transparent)}
 .zone{position:fixed;top:52px;bottom:56px;width:50%;z-index:2;cursor:pointer}
-#prevZ{left:0;cursor:w-resize}#nextZ{right:0;cursor:e-resize}
+.zone{width:calc((100% - var(--toc))/2)}
+#prevZ{left:0;cursor:w-resize}#nextZ{right:var(--toc);cursor:e-resize}
+aside{position:fixed;top:52px;bottom:56px;right:0;width:var(--toc);border-left:1px solid var(--ink);background:var(--paper);overflow-y:auto;z-index:4;padding:6px 0 30px;overscroll-behavior:contain}
+aside a{display:grid;grid-template-columns:1fr auto;column-gap:10px;padding:5px 18px 5px 20px;text-decoration:none;color:var(--ink);border-left:3px solid transparent}
+aside a:hover{text-decoration:underline}
+aside b{font-weight:500;font-size:13px;line-height:1.15}
+aside span{grid-column:1;font-weight:300;font-size:12px}
+aside i{grid-column:2;grid-row:1;font-style:normal;font-size:11px;font-variant-numeric:tabular-nums;align-self:start;padding-top:2px}
+aside a.r b{font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+aside a.c{margin-top:16px;padding-top:10px;border-top:1px solid var(--ink)}
+aside a.c b{font-weight:800;font-size:16px;letter-spacing:-.01em}
+aside a.p{padding-left:32px}
+aside a.on{border-left-color:var(--ink)}aside a.on b{font-weight:800}
+#tg{display:none}.sm{display:none}
+@media (max-width:1000px){:root{--toc:0px} aside{width:min(320px,88vw);transform:translateX(100%);transition:transform .2s} body.open aside{transform:none;box-shadow:-20px 0 40px rgba(0,0,0,.15)} #tg{display:inline-block}}
 footer{position:fixed;bottom:0;left:0;right:0;height:56px;display:flex;align-items:center;gap:14px;padding:0 20px;border-top:1px solid var(--ink);background:var(--paper);z-index:3}
 footer input{flex:1;accent-color:var(--ink)}
 footer button{width:44px;font-size:18px;font-weight:800}
-@media (max-width:700px){header h1 span,.lab{display:none} header{gap:10px;padding:0 12px} select{max-width:120px} main{padding:8px}}
+@media (max-width:700px){header h1 span,.lab{display:none} .sm{display:inline} header h1{font-size:15px} #cpt{min-width:0;font-size:12px} header{gap:10px;padding:0 12px} select{max-width:120px} main{padding:8px}}
 </style></head>
 <body>
 <header><h1>NZI Architectes <span>· Book 2026</span></h1><span class="sp"></span>
-<select id="go" aria-label="Aller à"><option value="">Aller à…</option><option value="1">Couverture</option><option value="2">L'agence</option><option value="4">Prix</option><option value="5">Publications</option><option value="8">Conférences</option><option value="11">Sommaire</option><option value="12">01  Transformations</option><option value="118">02  Mixtes</option><option value="158">03  Découvrir, travailler, apprendre</option><option value="214">04  Habiter</option><option value="326">Bâtiments livrés</option><option value="327">Contacts</option></select>
+<button id="tg" aria-label="Chapitres et projets">Sommaire</button>
 <span id="cpt"></span>
-<a class="dl" href="NZI_Book_2026.pdf" download>Télécharger<span class="lab">&nbsp;le PDF (32 Mo)</span></a></header>
+<a class="dl" href="NZI_Book_2026.pdf" download><span class="lab">Télécharger le PDF (32 Mo)</span><span class="sm">PDF</span></a></header>
 <main><div class="spread" id="sp"></div></main>
+<aside id="toc" aria-label="Chapitres et projets"><a class="r" href="#1" data-p="1"><b>Couverture</b><i>1</i></a><a class="r" href="#2" data-p="2"><b>L&#x27;agence</b><i>2</i></a><a class="r" href="#4" data-p="4"><b>Prix</b><i>4</i></a><a class="r" href="#5" data-p="5"><b>Publications</b><i>5</i></a><a class="r" href="#8" data-p="8"><b>Conférences</b><i>8</i></a><a class="r" href="#11" data-p="11"><b>Sommaire</b><i>11</i></a><a class="c" href="#12" data-p="12"><b>01  Transformations</b><i>12</i></a><a class="p" href="#14" data-p="14"><b>Parking Nollet</b><span>Paris 17e</span><i>14</i></a><a class="p" href="#40" data-p="40"><b>Groupe scolaire Coquibus</b><span>Évry-Courcouronnes</span><i>40</i></a><a class="p" href="#54" data-p="54"><b>Résidence Bertelotte</b><span>Paris 15e</span><i>54</i></a><a class="p" href="#70" data-p="70"><b>Résidence sociale Félix-Faure</b><span>Aubervilliers</span><i>70</i></a><a class="p" href="#74" data-p="74"><b>Du Décathlon au complexe sportif</b><span>Saint-Dizier</span><i>74</i></a><a class="p" href="#88" data-p="88"><b>Groupe scolaire Langevin</b><span>Nanterre</span><i>88</i></a><a class="p" href="#100" data-p="100"><b>Musée des religions</b><span>Issy-les-Moulineaux</span><i>100</i></a><a class="p" href="#112" data-p="112"><b>Musée du numérique</b><span>Savigny-sur-Orge</span><i>112</i></a><a class="c" href="#118" data-p="118"><b>02  Mixtes</b><i>118</i></a><a class="p" href="#120" data-p="120"><b>Cœur des Sources</b><span>Saint-Germain-en-Laye</span><i>120</i></a><a class="p" href="#126" data-p="126"><b>Cité des sports Python-Duvernois</b><span>Paris 20e</span><i>126</i></a><a class="p" href="#142" data-p="142"><b>Îlot Belvédère</b><span>Bordeaux</span><i>142</i></a><a class="p" href="#148" data-p="148"><b>Gymnase Althéa Laurin</b><span>Épinay-sur-Seine</span><i>148</i></a><a class="c" href="#158" data-p="158"><b>03  Découvrir, travailler, apprendre</b><i>158</i></a><a class="p" href="#160" data-p="160"><b>Maison de la petite enfance</b><span>Vauréal</span><i>160</i></a><a class="p" href="#168" data-p="168"><b>Centre de loisirs de Bonneuil</b><span>Bonneuil-en-France</span><i>168</i></a><a class="p" href="#174" data-p="174"><b>École Jules-Ferry</b><span>Noisiel</span><i>174</i></a><a class="p" href="#182" data-p="182"><b>Accueil de loisirs des Ulis</b><span>Les Ulis</span><i>182</i></a><a class="p" href="#188" data-p="188"><b>Siège de la CCBN</b><span>Nangis</span><i>188</i></a><a class="p" href="#198" data-p="198"><b>Bureaux et enseignement supérieur</b><span>Dreux</span><i>198</i></a><a class="p" href="#202" data-p="202"><b>Les Pantinoises</b><span>Pantin</span><i>202</i></a><a class="p" href="#206" data-p="206"><b>Tiers-lieu des tours Aillaud</b><span>Nanterre</span><i>206</i></a><a class="c" href="#214" data-p="214"><b>04  Habiter</b><i>214</i></a><a class="p" href="#216" data-p="216"><b>26 logements participatifs</b><span>Montreuil</span><i>216</i></a><a class="p" href="#226" data-p="226"><b>13 maisons bois et paille</b><span>Nogent-le-Rotrou</span><i>226</i></a><a class="p" href="#236" data-p="236"><b>14 logements et une crèche</b><span>Paris 20e</span><i>236</i></a><a class="p" href="#250" data-p="250"><b>Village des athlètes, îlot PB10</b><span>L&#x27;Île-Saint-Denis</span><i>250</i></a><a class="p" href="#256" data-p="256"><b>47 logements et 20 maisons</b><span>Carrières-sous-Poissy</span><i>256</i></a><a class="p" href="#260" data-p="260"><b>16 logements rue du Landy</b><span>Aubervilliers</span><i>260</i></a><a class="p" href="#264" data-p="264"><b>Résidence intergénérationnelle du Souchet</b><span>La Norville</span><i>264</i></a><a class="p" href="#270" data-p="270"><b>45 logements en bois et paille</b><span>Bussy-Saint-Georges</span><i>270</i></a><a class="p" href="#280" data-p="280"><b>90 logements, ZAC des Musiciens</b><span>Bagneux</span><i>280</i></a><a class="p" href="#284" data-p="284"><b>Campus Cachan, lot 1</b><span>Cachan</span><i>284</i></a><a class="p" href="#290" data-p="290"><b>Maurepas, îlot 9</b><span>Rennes</span><i>290</i></a><a class="p" href="#294" data-p="294"><b>46 logements sociaux et une crèche</b><span>La Courneuve</span><i>294</i></a><a class="p" href="#300" data-p="300"><b>122 logements en bois</b><span>Champs-sur-Marne</span><i>300</i></a><a class="p" href="#304" data-p="304"><b>Habiter la canopée</b><span>Torcy</span><i>304</i></a><a class="p" href="#312" data-p="312"><b>Foyer rue Nationale</b><span>Boulogne-Billancourt</span><i>312</i></a><a class="p" href="#316" data-p="316"><b>Métronome</b><span>Sainte-Geneviève-des-Bois</span><i>316</i></a><a class="r" href="#326" data-p="326"><b>Bâtiments livrés</b><i>326</i></a><a class="r" href="#327" data-p="327"><b>Contacts</b><i>327</i></a></aside>
 <div class="zone" id="prevZ"></div><div class="zone" id="nextZ"></div>
 <footer><button id="prev" aria-label="Page précédente">‹</button>
 <input type="range" id="sl" min="1" max="328" value="1" aria-label="Page">
@@ -63,6 +78,7 @@ function show(i){
   if(dbl()&&(p==1||p==N))sp.className='spread';
   const vis=pages.filter(Boolean);
   document.getElementById('cpt').textContent=vis.join('–')+' / '+N;
+  if(typeof mark==='function')mark(Math.max(...vis));
   document.getElementById('sl').value=p;
   history.replaceState(null,'','#'+p);
   [1,2,3,4].forEach(k=>{[p+k,p-k].forEach(q=>{if(q>=1&&q<=N)new Image().src=src(q);});});
@@ -71,7 +87,13 @@ const step=d=>show(dbl()?(d>0?(p==1?2:p+2):(p<=3?1:p-2)):p+d);
 document.getElementById('prev').onclick=document.getElementById('prevZ').onclick=()=>step(-1);
 document.getElementById('next').onclick=document.getElementById('nextZ').onclick=()=>step(1);
 document.getElementById('sl').oninput=e=>show(+e.target.value);
-document.getElementById('go').onchange=e=>{if(e.target.value)show(+e.target.value);e.target.value='';};
+const tocA=[...document.querySelectorAll('#toc a')];
+tocA.forEach(a=>a.onclick=e=>{e.preventDefault();show(+a.dataset.p);document.body.classList.remove('open');});
+document.getElementById('tg').onclick=e=>{e.stopPropagation();document.body.classList.toggle('open');};
+document.querySelector('main').onclick=()=>document.body.classList.remove('open');
+function mark(last){let on=null;tocA.forEach(a=>{a.classList.remove('on');if(+a.dataset.p<=last)on=a;});
+  if(on){on.classList.add('on');const t=document.getElementById('toc'),r=on.getBoundingClientRect(),b=t.getBoundingClientRect();
+  if(r.top<b.top+20||r.bottom>b.bottom-20)t.scrollTop+=r.top-b.top-b.height/3;}}
 addEventListener('keydown',e=>{if(e.key=='ArrowRight'||e.key=='PageDown'||e.key==' ')step(1);
   if(e.key=='ArrowLeft'||e.key=='PageUp')step(-1);if(e.key=='Home')show(1);if(e.key=='End')show(N);});
 let x0=null;addEventListener('touchstart',e=>x0=e.touches[0].clientX,{passive:true});
